@@ -2,6 +2,7 @@ files {
  'html/vhs.ttf',
  'html/main.js',
  'html/index.html',
+ 'html/axon_blank.png',
 }
 
 ui_page 'html/index.html'
