@@ -1,14 +1,18 @@
 local showJob = nil
 
+ESX = nil
+
 Citizen.CreateThread(function()
-  while ESX == nil do
-    TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
-    Citizen.Wait(10)
-  end
-  Citizen.Wait(1000)
-  if PlayerData == nil or PlayerData.job == nil then
-	  	PlayerData = ESX.GetPlayerData()
-  end
+	while ESX == nil do
+		TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+		Citizen.Wait(0)
+	end
+
+	while ESX.GetPlayerData().job == nil do
+		Citizen.Wait(10)
+	end
+
+	PlayerData = ESX.GetPlayerData()
 end)
 
 
@@ -32,11 +36,13 @@ function formatTime(data)
 	return data
 end
 
+local axonOn = true
+
 Citizen.CreateThread(function()
   while true do
 		Citizen.Wait(20000)
 		showJob = 'none'
-		if(PlayerData ~= nil) and (PlayerData.job.name == 'police') then
+		if(PlayerData ~= nil) and (PlayerData.job.name == 'police') and axonOn == true then
 			ESX.TriggerServerCallback('esx_vhsText:getName', function(name)
 				rank = Config.Ranks[PlayerData.job.grade_name]
 				if rank then
@@ -56,9 +62,21 @@ Citizen.CreateThread(function()
 	end
 end)
 
+RegisterCommand('axon', function(source, args)
+	if (PlayerData.job.name == 'police') then
+		if axonOn then
+			axonOn = false
+			exports['mythic_notify']:DoCustomHudText('error', 'Preparing To Shut Down Axon. <br /> Please wait a few seconds.', 10000)
+		else
+			axonOn = true
+			exports['mythic_notify']:DoCustomHudText('success', 'Preparing Axon Device Startup <br /> Please wait a few seconds.', 10000)
+		end
+	end
+end)
+
 Citizen.CreateThread(function()
   while true do
-    Citizen.Wait(6000)
+    Citizen.Wait(1000)
     if (PlayerData ~= nil) and (PlayerData.job.name == 'police') then
       hour = GetClockHours()
       minute = GetClockMinutes()
@@ -76,12 +94,12 @@ Citizen.CreateThread(function()
       end
 
 			minute, month, dayOfMonth, hour = table.unpack(formatTime({minute, month, dayOfMonth, hour}))
-      local formatted = month..'/'..dayOfMonth..'/2019'..' '..hour..':'..minute..type
+      local formatted = month..'/'..dayOfMonth..'/2020'..' '..hour..':'..minute..type
       SendNUIMessage({
         action  = 'changeTime',
         data = formatted
       })
     end
-    Citizen.Wait(8000)
+    Citizen.Wait(1000)
   end
 end)
