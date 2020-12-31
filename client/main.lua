@@ -94,7 +94,7 @@ Citizen.CreateThread(function()
       end
 
 			minute, month, dayOfMonth, hour = table.unpack(formatTime({minute, month, dayOfMonth, hour}))
-      local formatted = month..'/'..dayOfMonth..'/2020'..' '..hour..':'..minute..type
+      local formatted = month..'/'..dayOfMonth..'/2021'..' '..hour..':'..minute..type
       SendNUIMessage({
         action  = 'changeTime',
         data = formatted
