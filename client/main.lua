@@ -66,10 +66,10 @@ RegisterCommand('axon', function(source, args)
 	if (PlayerData.job.name == 'police') then
 		if axonOn then
 			axonOn = false
-			exports['mythic_notify']:DoCustomHudText('error', 'Preparing To Shut Down Axon. <br /> Please wait a few seconds.', 10000)
+			exports['mythic_notify']:SendAlert('error', 'Preparing To Shut Down Axon. <br /> Please wait a few seconds.', 10000)
 		else
 			axonOn = true
-			exports['mythic_notify']:DoCustomHudText('success', 'Preparing Axon Device Startup <br /> Please wait a few seconds.', 10000)
+			exports['mythic_notify']:SendAlert('success', 'Preparing Axon Device Startup <br /> Please wait a few seconds.', 10000)
 		end
 	end
 end)
