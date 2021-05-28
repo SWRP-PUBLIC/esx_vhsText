@@ -1,3 +1,7 @@
+fx_version 'bodacious'
+
+game 'gta5'
+
 files {
  'html/vhs.ttf',
  'html/main.js',
